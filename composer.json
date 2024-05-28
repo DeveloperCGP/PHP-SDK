@@ -1,7 +1,6 @@
 {
     "name": "addonpayments/phpsdk",
     "description": "PHP SDK for addonpayments",
-    "version": "1.00.00",
     "type": "sdk",
     "autoload": {
         "psr-4": {
