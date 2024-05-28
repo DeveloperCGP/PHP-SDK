@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Cancel H2H Payment Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0275d8;
+            font-size: 24px;
+        }
+
+        #payment-form {
+            width: 350px;
+            border: 2px solid #0275d8;
+            padding: 20px;
+            text-align: center;
+            margin: 20px auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            width: calc(100% - 22px);
+            /* Adjust width to fit container */
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #0275d8;
+            color: white;
+            cursor: pointer;
+            width: 100%;
+            /* Full-width button */
+        }
+
+        button:hover {
+            background-color: #025aa5;
+        }
+
+        #response {
+            width: 350px;
+            border: 2px solid #0275d8;
+            /* Bright blue border to match the header */
+            padding: 20px;
+            text-align: center;
+            margin: 20px auto;
+            /* Added top and bottom margin for better spacing */
+            background-color: #ffffff;
+            /* White background for contrast */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Cancel H2H Payment Example</h2>
+    <form id="payment-form">
+        <input type="text" id="merchant_transaction_id" name="merchant_transaction_id" placeholder="Merchant Transaction ID" required>
+        <input type="text" id="transaction_id" name="transaction_id" placeholder="Transaction Id" required>
+        <button type="submit" id="submit">Submit</button>
+    </form>
+
+    <div id="response">
+        <h5>The Status</h5>
+        <p id="status"></p>
+    </div>
+
+
+    <!-- Including jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $('#payment-form').submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+            // Extracting input values
+            const merchantTransactionID = $('#merchant_transaction_id').val();
+            const transaction_id = $('#transaction_id').val();
+           
+            // 1. Perform h2h Request
+            const url = 'void.php';
+            $.ajax({
+                url: url, // Replace with your API endpoint
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    merchant_transaction_id: merchantTransactionID, 
+                    transaction_id: transaction_id,
+                }),
+                success: function (response) {
+                    console.log(response)
+                    if (response.status) {
+                       console.log(response.status)
+                       // 2. Result of the transaction
+                       $('#status').html(response.status);
+                    } else {
+                        alert("Response didn't recieved")
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors here
+                    console.error('Error:', error);
+                }
+            });
+
+
+
+        });
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<response operation-size="1">
+    <operations>
+        <operation sorted-order="1">
+            <amount>30.0</amount>
+            <currency>EUR</currency>
+            <details>{"resultCode":"00000","resultDescription":"OK","values":{"rfTransactionCurrency":"EUR","rfRTS":"355534686 790190 920642 240108160913","rfContactlessLogo":"false","rfOperationType":"Void","rfAuthMode":"On","rfDataEntryMode":"Manual","rfCardHolderVerificationMode":"No","rfFuc":"355534686","rfTerminalID":"00000500","rfProcessor":"Redsys","rfMerchantCity":"BARCELONA","rfMerchantPostalCode":"08014","rfMerchantAddress":"GRAN VIA DE LES CORTS CATALANE, 159 PLANTA 7","rfMaskedPan":"","rfOperationDateTime":"08/01/24 16:09:13","rfAuthNumber":"591787","rfTransactionAmountCurrency":"30,00 EUR","rfProcessorMessage":"","rfPrintSignatureBox":"false","rfCardPresent":"true","OperationResult":"000"}}</details>
+            <merchantTransactionId>76793729</merchantTransactionId>
+            <message>Success 'Void' operation</message>
+            <operationType>VOID</operationType>
+            <optionalTransactionParams/>
+            <originalTransactionId>7788288</originalTransactionId>
+            <paySolTransactionId>355534686 790190 920642 240108160913</paySolTransactionId>
+            <paymentDetails>
+                <cardHolderName>First name Last name</cardHolderName>
+                <cardNumber>490727****2227</cardNumber>
+                <cardNumberToken>6537275043632227</cardNumberToken>
+                <cardType>VISA/CREDIT</cardType>
+                <expDate>0625</expDate>
+                <extraDetails>
+                    <entry>
+                        <key>cardCategory</key>
+                        <value>Not Available</value>
+                    </entry>
+                    <entry>
+                        <key>rememberMe</key>
+                        <value>true</value>
+                    </entry>
+                </extraDetails>
+                <issuerBank>SERVIRED MASTERCARD INTERNACIONAL</issuerBank>
+                <issuerCountry>ES</issuerCountry>
+            </paymentDetails>
+            <paymentSolution>caixapucpuce</paymentSolution>
+            <status>SUCCESS</status>
+            <transactionId>7788294</transactionId>
+            <respCode>
+                <code>0000</code>
+                <message>Successful</message>
+                <uuid>0b2a3684_0fc5_4bfd_9018_6e19037bc932</uuid>
+            </respCode>
+            <authCode>591787</authCode>
+            <paymentCode>000</paymentCode>
+            <paymentMessage>Operación finalizada con éxito</paymentMessage>
+        </operation>
+    </operations>
+</response>

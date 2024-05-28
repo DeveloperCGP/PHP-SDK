@@ -1,0 +1,78 @@
+{
+    "response": {
+        "workFlowResponse": {
+            "id": 51157,
+            "name": "BNPL",
+            "version": 0
+        },
+        "status": "SUCCESS",
+        "message": "WorkFlow has finished successfully, for transaction Id: 7788909",
+        "optionalTransactionParams": {},
+        "operationsArray": [
+            {
+                "type": "operation",
+                "sortedOrder": 1,
+                "status": "REDIRECTED",
+                "message": "Transaction was redirected.",
+                "payFrexTransactionId": 7788909,
+                "merchantTransactionId": "592060",
+                "paySolTransactionId": null,
+                "operationType": "DEBIT",
+                "currency": "EUR",
+                "amount": "200",
+                "paymentSolution": "quix",
+                "paymentMethod": null,
+                "service": null,
+                "redirectionResponse": null,
+                "redirectionParameters": null,
+                "redirectionParam": null,
+                "details": "{\"orderId\":\"6d26c410-bedf-4fae-b6f1-17dd985da639\",\"authToken\":\"XGojwiNF3n8WaxIkCiP6ID08ztjrYg7A\"}",
+                "originalPayFrexTransactionId": null,
+                "originalCurrency": null,
+                "originalAmount": null,
+                "remainingAmount": null,
+                "optionalTransactionParams": {},
+                "checkoutURL": "NO-APPLY",
+                "fee": null,
+                "checkFields": null,
+                "statusType3DS": null,
+                "paymentDetails": {
+                    "issuerCountry": null,
+                    "issuerBank": null,
+                    "cardHolderName": null,
+                    "cardType": null,
+                    "cardNumber": null,
+                    "account": null,
+                    "cardNumberToken": null,
+                    "expDate": null,
+                    "extraDetails": {
+                        "nemuruTxnId": "7788909",
+                        "nemuruCartHash": "6d26c410-bedf-4fae-b6f1-17dd985da639",
+                        "nemuruAuthToken": "XGojwiNF3n8WaxIkCiP6ID08ztjrYg7A",
+                        "status": "REDIRECTED"
+                    }
+                },
+                "extraInfo": {},
+                "paymentResponse": {
+                    "status": "REDIRECTED",
+                    "message": "Transaction was redirected.",
+                    "paySolTransactionId": null,
+                    "details": "{\"orderId\":\"6d26c410-bedf-4fae-b6f1-17dd985da639\",\"authToken\":\"XGojwiNF3n8WaxIkCiP6ID08ztjrYg7A\"}"
+                },
+                "authCode": null,
+                "paymentMessage": null,
+                "paymentCode": null,
+                "mpi": null,
+                "subscriptionPlan": null,
+                "rad": null,
+                "respCode": {
+                    "type": "respCode",
+                    "code": "0000",
+                    "message": "Successful",
+                    "uuid": "270336a1_6413_4470_b0bd_381900f0adc9"
+                }
+            }
+        ],
+        "operationSize": 1
+    }
+} 

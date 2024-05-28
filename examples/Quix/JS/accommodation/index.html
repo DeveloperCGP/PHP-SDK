@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quix Payment Example with JavaScript</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            /* Modern font for better readability */
+            background-color: #f5f5f5;
+            /* Light grey background for a softer look */
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #0275d8;
+            /* Bright blue for the header to make it stand out */
+            font-size: 24px;
+            /* Larger font size for better visibility */
+        }
+
+        #render-cashier {
+            width: 350px;
+            border: 2px solid #0275d8;
+            /* Bright blue border to match the header */
+            padding: 20px;
+            text-align: center;
+            margin: 20px auto;
+            /* Added top and bottom margin for better spacing */
+            background-color: #ffffff;
+            /* White background for contrast */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Subtle shadow for depth */
+        }
+
+        /* Styling for buttons and inputs for a more interactive feel */
+        #payment-form {
+
+            width: 350px;
+            border: 2px solid #0275d8;
+            padding: 20px;
+            text-align: center;
+            margin: 20px auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            width: 32%;
+            border: 1px solid #ccc;
+        }
+
+
+
+        button {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-left: 13px;
+        }
+
+        button {
+            background-color: #0275d8;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #025aa5;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="payment-form">
+        <label for="amount">Amount:</label>
+        <input type="text" id="amount" name="amount" placeholder="Enter amount" required>
+        <span>€</span>
+        <button type="submit" id="submit_amount">Submit</button>
+    </form>
+    <div id="epgjs-cashier-div"></div>
+    <div id="render-cashier"></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://epgjs-rendercashier-stg.addonpayments.com/js/public/epgjs-4.0.0-min.js"></script>
+    <script>
+
+
+        function validateAndFormatFloat(value) {
+            // Replace EU locale thousands separator (dot) with nothing and decimal separator (comma) with dot
+            // This conversion makes the format compatible with parseFloat
+            value = value.replace(',', '.');
+            const num = parseFloat(value);
+            if (isNaN(num)) {
+                alert('Please enter a valid number.');
+                return null; // Return null to indicate invalid input
+            } else if (num < 0 ) {
+                alert('Please enter a positive number.');
+                return null; // Return null to indicate invalid input
+            }else if (num < 50 || num > 1200 ) {
+                alert('The amount should be between 50 and 1200.');
+                return null; // Return null to indicate invalid input
+            }
+           
+            return num.toFixed(4); // Ensures the number is in correct float format
+        }
+
+        $('#payment-form').submit(function (e) {
+            e.preventDefault(); // Prevent default form submission
+
+
+            const amount = validateAndFormatFloat($('#amount').val());
+            if (amount === null) {
+                // Invalid input, halt further execution
+                return;
+            }
+       
+        // 1. Auth Request    
+        const authURL = 'auth.php';
+        $.ajax({
+            url: authURL, // Replace with your API endpoint
+            type: 'POST',
+            contentType: 'application/json',
+            success: function (response) {
+                console.log(response)
+                if (response.auth_token) {
+                    // 2. Display the Payment Form
+                    EPGJS_COMM.setEpgBaseUrl('https://epgjs-web-stg.addonpayments.com/');
+                    EPGJS.renderIntegratedCashier(response.auth_token, 'render-cashier', 'quix');
+                    EPGJS_COMM.setMerchantPrePayCallback(prePayCallback);
+                    window['EPGJS'].setInitPaysolParam({
+                        "amount": amount * 100,
+                        "currency": "EUR",
+                        "language": "es",
+                        "locale": "es-ES",
+                        "widgetCheckoutStyle": {
+                            "color": "#4CC6CD",
+                            "branding": "lending_hub"
+                        },
+                        "widgetSimulationConditionsProduct": "instalments",
+                        "widgetSimulationStyle": "width: 100%;text-align:center",
+                        "widgetSimulationBranding": "lending_hub",
+                        "widgetSimulationVariant": "select",
+                        "widgetSimulationColor": "#f4aeeb"
+                    });
+                } else {
+                    // Handle the case where no auth token is provided
+                    alert('Auth Token not provided.');
+                }
+            },
+            error: function (xhr, status, error) {
+                // Handle errors here
+                console.error('Error:', error);
+            }
+        });
+
+
+        // 3. Payment Proccess
+        function prePayCallback(prepayData) {
+            const chargeURL = 'charge.php' // Replace with your API endpoint
+
+            $.ajax({
+                url: chargeURL,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ prepayToken: prepayData.prepayToken, amount: amount  }),
+                success: function (response) {
+                    console.log(response)
+                    if (response.nemuru_auth_token && response.nemuru_cart_hash) {
+                        window['NEMURU'].checkoutNemuru(response.nemuru_auth_token, response.nemuru_cart_hash);
+                        window['NEMURU'].setStatusCallback(() => {
+                            window.location = 'https://test.com/notification.html';
+                        });
+                    } else {
+                        // Handle the case where no redirect URL is provided
+                        alert('nemuru_auth_token or nemuru_cart_hash not provided.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors here
+                    console.error('Error:', error);
+                }
+            });
+        }
+
+});
+
+
+    </script>
+</body>
+
+</html>
