@@ -1,5 +1,5 @@
 {
-    "name": "addonpayments/phpsdk",
+    "name": "comerciaglobalpayments/phpsdk",
     "description": "PHP SDK for addonpayments",
     "type": "sdk",
     "autoload": {
