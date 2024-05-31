@@ -1,0 +1,10 @@
+var classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse =
+[
+    [ "__construct", "classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse.html#a0fdcb26d43f03a0b1c31d4e04c7e6726", null ],
+    [ "getId", "classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse.html#a12251d0c022e9e21c137a105ff683f13", null ],
+    [ "getName", "classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse.html#a3d0963e68bb313b163a73f2803c64600", null ],
+    [ "getVersion", "classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse.html#afa8e7a3a646144eab50188b7a805a389", null ],
+    [ "setId", "classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse.html#acfeafb5c1e91d9cca1724a8db6bce0f6", null ],
+    [ "setName", "classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse.html#ad6cb9a450f56e9e716c59ea0273b78f5", null ],
+    [ "setVersion", "classAddonPaymentsSDK_1_1QuixNotificationModel_1_1WorkFlowResponse.html#ad0ef8e2f3cbb7f981d8b2e92e6f03824", null ]
+];
