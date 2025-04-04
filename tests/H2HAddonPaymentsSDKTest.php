@@ -45,6 +45,7 @@ class H2HAddonPaymentsSDKTest extends TestCase
             ->setStatusURL('https://test.com/status')
             ->setSuccessURL('https://test.com/success')
             ->setErrorURL('https://test.com/error')
+            ->setCancelURL('https://test.com/cancel')
             ->setAwaitingURL('https://test.com/awaiting');
 
 
@@ -70,13 +71,13 @@ class H2HAddonPaymentsSDKTest extends TestCase
         $merchantParams = $sendRequest->getOtherConfigurations();
         $paymentLink = $sendRequest->getResponse()->getRedirectUrl();
         
-        $excpectedEncryptedRequest = 'Tww+J3iMPaUnc8ywOO93NxjJkCKqpGZXVdLqQA6YSkcRCKX7JmuZTtcLHncgjXrGmr3GoKewdCmQNSQrpyRrnxX5VHdg3xZIufLEe0PKlia3oGsCUMVAIIpy4WhAf8fuE9F78kLiSVa/WG5snIuVH58wbe4Hyc+rrLG62pxbRUlREJRY5LCIxPj9SiKFiVCapsxkUYpBE4ue2Ki11TfsQsnUHgKlxskRDcSFH9JpAnVslyFvz0Z5z9xVuG/lXb6OZiGEeCYCAfDr7NV9NK5tzpYG4AfDTh2zcp8LbCVPwS1eRutRaqBH/3akMoZG9slmTcIv38micqZg+wvDOiOI167SHtqZv5VH9QCeehUTq45v+Ag5Q4IiVoiNjso9OlV3k7swGpqkMk6DcY5HVwiIw9gAFpC/h6TGEGKssqso6fpNlIfIt/wZF/4pK6ofeaT2U3e1Are9hFN/dcFSkDTGQWck5IrXIeNxwgFuRlAJFMWkArkhoRZZqwheeDh3ZQyTpTs7BLaBX43DkJzuSjzdW6xwjHLAuA5jpHdWYV3tnpzW/AyYSpfJn+ZIQkgVAsu6uwE/qPolUW45JNA/s+qUPTiZbsVzkS/Yi6fYVFh/CkU=';
-        $expectedFormatedRequest = 'amount=9&currency=EUR&country=ES&customerId=23&paymentSolution=creditcards&operationType=debit&merchantTransactionId=4545455&cardNumber=4907270002222227&expDate=0625&cvnNumber=123&chName=Pablo+ee&statusURL=https%3A%2F%2Ftest.com%2Fstatus&successURL=https%3A%2F%2Ftest.com%2Fsuccess&errorURL=https%3A%2F%2Ftest.com%2Ferror&awaitingURL=https%3A%2F%2Ftest.com%2Fawaiting&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.00%3Btype%3AH2H&merchantId=1111111';
+        $excpectedEncryptedRequest = 'Tww+J3iMPaUnc8ywOO93NxjJkCKqpGZXVdLqQA6YSkcRCKX7JmuZTtcLHncgjXrGmr3GoKewdCmQNSQrpyRrnxX5VHdg3xZIufLEe0PKlia3oGsCUMVAIIpy4WhAf8fuE9F78kLiSVa/WG5snIuVH58wbe4Hyc+rrLG62pxbRUlREJRY5LCIxPj9SiKFiVCapsxkUYpBE4ue2Ki11TfsQsnUHgKlxskRDcSFH9JpAnVslyFvz0Z5z9xVuG/lXb6OZiGEeCYCAfDr7NV9NK5tzpYG4AfDTh2zcp8LbCVPwS1eRutRaqBH/3akMoZG9slmTcIv38micqZg+wvDOiOI167SHtqZv5VH9QCeehUTq45v+Ag5Q4IiVoiNjso9OlV3k7swGpqkMk6DcY5HVwiIw9gAFpC/h6TGEGKssqso6fojfjsKQw9PjV+2y2qyiu13JImbxFs9BWqfsADChhQD2coloEomPX0I66r/Wed6qAQuEkbQhB3L5XwihzktbHRA1tDo5D+Mhh8DFLgefF1D1AnlOyps6AMoh/krlG2ShDXPXra3yfQSGdBjAy7xdezfjHmiZn3lGabGkrx0bBwr5lrulLaonzvIu4hNlXH8W5muZtwixuOIfdaQtqVTAl4ng2P6OqqkYK+xFGCy13r0mYIpVdxgHRPRcPpqvcjUR74=';
+        $expectedFormatedRequest = 'amount=9&currency=EUR&country=ES&customerId=23&paymentSolution=creditcards&operationType=debit&merchantTransactionId=4545455&cardNumber=4907270002222227&expDate=0625&cvnNumber=123&chName=Pablo+ee&statusURL=https%3A%2F%2Ftest.com%2Fstatus&successURL=https%3A%2F%2Ftest.com%2Fsuccess&errorURL=https%3A%2F%2Ftest.com%2Ferror&cancelURL=https%3A%2F%2Ftest.com%2Fcancel&awaitingURL=https%3A%2F%2Ftest.com%2Fawaiting&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.0.2%3Btype%3AH2H&merchantId=1111111';
 
         $this->assertEquals($excpectedEncryptedRequest, $encryptedRequest, 'The formatted request does not match the expected values.');
         $this->assertEquals($expectedFormatedRequest, $formatedRequest, 'The formatted request does not match the expected values.');
 
-        $this->assertContains('sdk:php;version:1.00;type:H2H', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:H2H', $merchantParams, 'Assert merchantParams in request');
 
         $urlPattern = '/https:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}(\/\S*)?/';
         $this->assertMatchesRegularExpression($urlPattern, $paymentLink, 'Test for verifying URL presence in sendRedirectionPaymentRequest');
@@ -133,6 +134,8 @@ class H2HAddonPaymentsSDKTest extends TestCase
             $parameters->setSuccessURL('https://test.com/success');
         if ($missingParameter !== 'errorURL')
             $parameters->setErrorURL('https://test.com/error');
+        if ($missingParameter !== 'cancelURL')
+            $parameters->setCancelURL('https://test.com/cancel');   
         if ($missingParameter !== 'awaitingURL')
             $parameters->setAwaitingURL('https://test.com/status');
 
@@ -169,6 +172,7 @@ class H2HAddonPaymentsSDKTest extends TestCase
             'Missing Status URL' => ['statusURL', 'Mandatory parameters are missing. Please ensure you provide:  statusURL.'],
             'Missing Success URL' => ['successURL', 'Mandatory parameters are missing. Please ensure you provide:  successURL.'],
             'Missing Error URL' => ['errorURL', 'Mandatory parameters are missing. Please ensure you provide:  errorURL.'],
+            'Missing Cancel URL' => ['cancelURL', 'Mandatory parameters are missing. Please ensure you provide:  cancelURL.'],
             'awaitingURL' => ['awaitingURL', 'Mandatory parameters are missing. Please ensure you provide:  awaitingURL.'],
         ];
     }

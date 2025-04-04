@@ -45,6 +45,7 @@ class HostedAddonPaymentsSDKTest extends TestCase
             ->setStatusURL('https://test.com/status')
             ->setSuccessURL('https://test.com/success')
             ->setErrorURL('https://test.com/error')
+            ->setCancelURL('https://test.com/cancel')
             ->setAwaitingURL('https://test.com/awaiting');
 
 
@@ -81,15 +82,15 @@ class HostedAddonPaymentsSDKTest extends TestCase
         $paymentLink = $sendRequest->getResponse()->getRedirectUrl();
 
 
-        $expectedEncryptedRequest = 'rB33CYAw5eq1y3pVFK4DEogiwRLa0Zdxlp7fCunh8bsX2v37XgYPs09aIcTMHfMS/II31GvPmbOrxToCxZY37/l3fBpbNyQT0ZGW8U/ZoVoGMcx/YIhd+ht8sQqGDOzqkYcdIvdtev8qiaJW6hVPCNibbxpwG5AbGcSiN/eWhOD1wFckXaoJU7L8+nXBfBH36C3QyraHr8b3xjC5GhP9K1iNRyaGsTAkr+QF0jHUsothwmefaT46Z1dTIhPjr2AgasHGvT0j5GPk9zJfRu3j2gkr37zGi2Sglj4D/7BUtkN0JCCrEmODil197mjA+jNv8BMa5gDhAfjHdbSarcTe3lEISNwXNJgZ0ISe5Ievt1K0kjOhCsLBol5JSLrMgoN4tNWipmANrf2Z6K7/tUnZ3A/nlXmnYlzXV9K+7j8QK7Lds5Pk9ISBOEVeiCTpfN/5LG/A8SXjjcLALqrsp3ccdmzWU/6hHVMbzyAsr4N3Uf5JYxkKH+KQB3sxF3UaqXjtfcw95GK8T3MQWAYHPNdGbw==';
+        $expectedEncryptedRequest = 'rB33CYAw5eq1y3pVFK4DEogiwRLa0Zdxlp7fCunh8bsX2v37XgYPs09aIcTMHfMS/II31GvPmbOrxToCxZY37/l3fBpbNyQT0ZGW8U/ZoVoGMcx/YIhd+ht8sQqGDOzqkYcdIvdtev8qiaJW6hVPCNibbxpwG5AbGcSiN/eWhOD1wFckXaoJU7L8+nXBfBH36C3QyraHr8b3xjC5GhP9K1iNRyaGsTAkr+QF0jHUsothwmefaT46Z1dTIhPjr2AgasHGvT0j5GPk9zJfRu3j2gkr37zGi2Sglj4D/7BUtkN0JCCrEmODil197mjA+jNvXUrW8Hmtlxl6AU1pJSrk5E+pW6X/GW2+su0dLhuwy3+eK79gcO5GL2gWjUz+wr4sXNHoRSA0gDHv56kMm3aJeoVj9vfzSRhtUEAEXzAoeoSsocPgmC6jVencvgDIiRuCcfOiAQUEix8gfRzRM4L6jO5m2W6/wff/eQFW1Z2KZj6GrMPXempS/b55cfsK8NoWEQ1S9p8qSXH2/qIJ4x1co+GhvDq3lfaICtlATm4Rt1jwbMcoNVltpH6NUA+gQOhF5/7A8CAEVibvQ02Y13PBag==';
 
         $this->assertEquals($expectedEncryptedRequest, $encryptedRequest, 'The encrypted request does not match the expected values.');
 
 
-        $expectedFormatedRequest = 'amount=30&currency=EUR&country=ES&customerId=13&operationType=debit&paymentSolution=creditcards&merchantTransactionId=87145&statusURL=https%3A%2F%2Ftest.com%2Fstatus&successURL=https%3A%2F%2Ftest.com%2Fsuccess&errorURL=https%3A%2F%2Ftest.com%2Ferror&awaitingURL=https%3A%2F%2Ftest.com%2Fawaiting&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.00%3Btype%3AHosted&merchantId=1111111';
+        $expectedFormatedRequest = 'amount=30&currency=EUR&country=ES&customerId=13&operationType=debit&paymentSolution=creditcards&merchantTransactionId=87145&statusURL=https%3A%2F%2Ftest.com%2Fstatus&successURL=https%3A%2F%2Ftest.com%2Fsuccess&errorURL=https%3A%2F%2Ftest.com%2Ferror&cancelURL=https%3A%2F%2Ftest.com%2Fcancel&awaitingURL=https%3A%2F%2Ftest.com%2Fawaiting&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.0.2%3Btype%3AHosted&merchantId=1111111';
 
         $this->assertEquals($expectedFormatedRequest, $formatedRequest, 'The formatted request does not match the expected values.');
-        $this->assertContains('sdk:php;version:1.00;type:Hosted', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:Hosted', $merchantParams, 'Assert merchantParams in request');
         // Your existing assertions...
         $urlPattern = '/https:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}(\/\S*)?/';
         $this->assertMatchesRegularExpression($urlPattern, $paymentLink, 'Test for verifying URL presence in sendRedirectionPaymentRequest');
@@ -135,6 +136,8 @@ class HostedAddonPaymentsSDKTest extends TestCase
             $parameters->setStatusURL('https://test.com/status');
         if ($missingParameter !== 'successURL')
             $parameters->setSuccessURL('https://test.com/success');
+        if ($missingParameter !== 'cancelURL')    
+            $parameters->setCancelURL('https://test.com/cancel');
         if ($missingParameter !== 'errorURL')
             $parameters->setErrorURL('https://test.com/error');
         if ($missingParameter !== 'awaitingURL')
@@ -162,6 +165,7 @@ class HostedAddonPaymentsSDKTest extends TestCase
             'Missing Merchant Transaction ID' => ['merchantTransactionId', 'Mandatory parameters are missing. Please ensure you provide:  merchantTransactionId.'],
             'Missing Payment Solution' => ['paymentSolution', 'Mandatory parameters are missing. Please ensure you provide:  paymentSolution.'],
             'Missing Status URL' => ['statusURL', 'Mandatory parameters are missing. Please ensure you provide:  statusURL.'],
+            'Missing Cancel URL' => ['cancelURL', 'Mandatory parameters are missing. Please ensure you provide:  cancelURL.'],
             'Missing Success URL' => ['successURL', 'Mandatory parameters are missing. Please ensure you provide:  successURL.'],
             'Missing Error URL' => ['errorURL', 'Mandatory parameters are missing. Please ensure you provide:  errorURL.'],
             'awaitingURL' => ['awaitingURL', 'Mandatory parameters are missing. Please ensure you provide:  awaitingURL.'],

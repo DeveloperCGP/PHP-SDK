@@ -44,13 +44,19 @@ class Operations
             if ($serviceName === 'paymentSol') {
 
                 foreach ($operations as $operation) {
-                    if (isset($operation->paymentSolution) && !isset($operation->service)) {
+                    if (isset($operation->paymentSolution) && isset($operation->paymentMethod) && !isset($operation->service)) {
                         return $operation;
                     }
                 }
             } else {
-
+                
                 foreach ($operations as $operation) {
+                    if (isset($operation->message) && str_contains($operation->message , '3dsv2' ) && $serviceName === "3DSv2"){
+                        return $operation;
+                    } 
+                    if (str_contains($operation->status , '3DS' ) && $serviceName === "3DSv2"){
+                        return $operation;
+                    } 
                     if (isset($operation->service) && trim($operation->service) === $serviceName) {
                         return $operation;
                     }

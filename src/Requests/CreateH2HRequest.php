@@ -8,6 +8,7 @@ use AddonPaymentsSDK\Requests\Utils\RequestsPaths;
 use AddonPaymentsSDK\Requests\Utils\Exceptions\NetworkException;
 use AddonPaymentsSDK\Requests\Utils\HttpExceptionHandler;
 use AddonPaymentsSDK\Requests\Utils\Response;
+use AddonPaymentsSDK\Config\Utils\Helpers;
 
 class CreateH2HRequest
 {
@@ -25,17 +26,17 @@ class CreateH2HRequest
     public ?string $encryptedRequest = null;
     public ?string $signature = null;
     public ?string $redirectUrl = null;
-
     private array $otherConfigurations = [];
-
     public mixed $response = null;
-
     private mixed  $ivGenerator;
+    private string $packageVersion;
     public function __construct(callable  $ivGenerator = null)
     {
         $this->ivGenerator = $ivGenerator ?? function () : string {
             return openssl_random_pseudo_bytes(openssl_cipher_iv_length('AES-256-CBC'));
         };
+
+        $this->packageVersion = Helpers::getPackageVersion();
     }
     
 
@@ -55,9 +56,9 @@ class CreateH2HRequest
         $this->production = $production;
         if(count($otherConfigurations) > 0) {
             if (isset($otherConfigurations['merchantParams']) && !empty($otherConfigurations['merchantParams'])) {
-                $otherConfigurations['merchantParams'] .= ';sdk:php;version:1.00;type:H2H';
+                $otherConfigurations['merchantParams'] .= ';sdk:php;version:'. $this->packageVersion . ';type:H2H';
             } else {
-                $otherConfigurations['merchantParams'] = 'sdk:php;version:1.00;type:H2H';
+                $otherConfigurations['merchantParams'] = 'sdk:php;version:'. $this->packageVersion . ';type:H2H';
             }
         }
         $this->otherConfigurations = $otherConfigurations;
@@ -191,7 +192,7 @@ class CreateH2HRequest
 
 
         if ($responseData !== false && is_string($responseData)) {
-            $this->logMessage("Resopnse recived:" . print_r($responseData, true), $headers , $data_url, "H2H", "creditcards" , $this->otherConfigurations['merchantTransactionId'], $this->otherConfigurations);
+            $this->logMessage("Request processed successfully." , $responseData , $headers , $data_url, "H2H", "creditcards" , $this->otherConfigurations['merchantTransactionId'], $this->otherConfigurations);
 
             $this->response = $responseData;
 

@@ -1,8 +1,7 @@
 <?php
 
 namespace AddonPaymentsSDK\NotificationModel\Operations;
-use phpDocumentor\Reflection\Types\Mixed_;
-
+use AddonPaymentsSDK\NotificationModel\Utils\ExtraDetailsProcessor;
 
 class PaymentSolutionOperation
 {
@@ -27,7 +26,7 @@ class PaymentSolutionOperation
     private mixed $paymentSolution;
     private mixed $subscriptionPlan;
     private mixed $authCode;
-
+    private mixed $optionalTransactionParams = null;
 
     public function __construct(mixed $operation)
     {
@@ -48,11 +47,12 @@ class PaymentSolutionOperation
         $this->setPaymentCode(isset($operation->paymentCode)? trim((string) $operation->paymentCode) : null);
         $this->setPaymentMessage(isset($operation->paymentCode)? trim((string) $operation->paymentMessage) : null);
         $this->setMPI(isset($operation->mpi)? $operation->mpi : null);
-        $this->setPaymentMethod(isset($operation->paymentMethod)? trim((string) $operation->paymentMethod) : null);
-        $this->setPaymentSolution(isset($operation->paymentSolution)? trim((string) $operation->paymentSolution) : null);
-        $this->setSubscriptionPlan(isset($operation->subscriptionPlan)? trim((string) $operation->subscriptionPlan) : null);
-        $this->setAuthCode(isset($operation->paymentSolution) ? trim((string) $operation->paymentSolution) : null);
-
+        $this->setPaymentMethod(isset($operation->paymentMethod)? $operation->paymentMethod : null);
+        $this->setPaymentSolution(isset($operation->paymentSolution)? $operation->paymentSolution : null);
+        $this->setSubscriptionPlan(isset($operation->subscriptionPlan)? $operation->subscriptionPlan : null);
+        $this->setAuthCode(isset($operation->paymentSolution) ? $operation->paymentSolution : null);
+        $this->setOptionalTransactionParams(isset($operation->optionalTransactionParams) ? $operation->optionalTransactionParams : null);
+        
     }
 
     private function setStatus(?string $status): void
@@ -146,6 +146,11 @@ class PaymentSolutionOperation
     private function setAuthCode(mixed $authCode): void
     {
         $this->authCode = $authCode;
+    }
+
+    private function setOptionalTransactionParams(mixed $var): void
+    {
+        if ($var) $this->optionalTransactionParams = ExtraDetailsProcessor::processExtraDetails($var);
     }
 
     // Getters
@@ -329,6 +334,17 @@ class PaymentSolutionOperation
     {
         return $this->authCode;
     }
+
+    /**
+     * Get the optional transaction parameters of the ThreeDs operation.
+     *
+     * @return array The optional transaction parameters or null if not found.
+     */
+
+     public function getOptionalTransactionParams(): ?array
+     {
+         return $this->optionalTransactionParams;
+     }
 
 
 }

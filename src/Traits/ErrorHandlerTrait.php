@@ -48,6 +48,7 @@ trait ErrorHandlerTrait
             'statusURL' => 'statusURL',
             'successURL' => 'successURL',
             'errorURL' => 'errorURL',
+            'cancelURL' => 'cancelURL',
             'awaitingURL' => 'awaitingURL',
 
         ];
@@ -77,11 +78,15 @@ trait ErrorHandlerTrait
             'country' => 'country',
             'customerId' => 'customerId',
             'ipAddress' => 'ipAddress',
+            'customerCountry'=> 'customerCountry',
+            'customerNationalId' => 'customerNationalId',
+            'customerEmail' => 'customerEmail',
             'merchantTransactionId' => 'merchantTransactionId',
             'paymentSolution' => 'paymentSolution',
             'statusURL' => 'statusURL',
             'successURL' => 'successURL',
             'errorURL' => 'errorURL',
+            'cancelURL' => 'cancelURL',
             'awaitingURL' => 'awaitingURL',
 
         ];
@@ -181,6 +186,7 @@ trait ErrorHandlerTrait
             'operationType' => 'operationType',
             'statusURL' => 'statusURL',
             'successURL' => 'successURL',
+            'cancelURL' => 'cancelURL',
             'errorURL' => 'errorURL',
             'awaitingURL' => 'awaitingURL',
         ];
@@ -355,11 +361,11 @@ trait ErrorHandlerTrait
             'country' => 'country',
             'customerId' => 'customerId',
             'apiVersion' => 'apiVersion',
-            
             'operationType' => 'operationType',
             'merchantTransactionId' => 'merchantTransactionId',
             'statusURL' => 'statusURL',
             'successURL' => 'successURL',
+            'cancelURL' => 'cancelURL',
             'errorURL' => 'errorURL',
             'awaitingURL' => 'awaitingURL',
         ];
@@ -419,6 +425,8 @@ trait ErrorHandlerTrait
             'awaitingURL' => 'awaitingURL',
             'firstName' => 'firstName',
             'lastName' => 'lastName',
+            'customerCountry'=> 'customerCountry',
+            'customerNationalId' => 'customerNationalId',
             'customerEmail' => 'customerEmail',
             'paysolExtendedData' => 'paysolExtendedData'
 

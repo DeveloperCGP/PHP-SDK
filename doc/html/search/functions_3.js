@@ -1,4 +1,0 @@
-var searchData=
-[
-  ['encryption_0',['encryption',['../classAddonPaymentsSDK_1_1Requests_1_1CreateCaptureRequest.html#a634ff97ad23433aa23172316f729e187',1,'AddonPaymentsSDK\Requests\CreateCaptureRequest\encryption()'],['../classAddonPaymentsSDK_1_1Requests_1_1CreateH2HRequest.html#a634ff97ad23433aa23172316f729e187',1,'AddonPaymentsSDK\Requests\CreateH2HRequest\encryption()'],['../classAddonPaymentsSDK_1_1Requests_1_1CreateRedirectionRequest.html#a634ff97ad23433aa23172316f729e187',1,'AddonPaymentsSDK\Requests\CreateRedirectionRequest\encryption()'],['../classAddonPaymentsSDK_1_1Requests_1_1CreateRefundRequest.html#a634ff97ad23433aa23172316f729e187',1,'AddonPaymentsSDK\Requests\CreateRefundRequest\encryption()'],['../classAddonPaymentsSDK_1_1Requests_1_1CreateVoidRequest.html#a634ff97ad23433aa23172316f729e187',1,'AddonPaymentsSDK\Requests\CreateVoidRequest\encryption()']]]
-];

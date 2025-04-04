@@ -41,6 +41,7 @@ class JSChargeAddonPaymentsSDKTest extends TestCase
             ->setPaymentSolution(PaymentSolutions::CREDITCARDS)
             ->setStatusURL('https://test.com/status')
             ->setSuccessURL('https://test.com/success')
+            ->setCancelURL('https://test.com/cencel')
             ->setErrorURL('https://test.com/error')
             ->setAwaitingURL('https://test.com/awaiting');
 
@@ -61,7 +62,7 @@ class JSChargeAddonPaymentsSDKTest extends TestCase
         $merchantParams = $sendRequest->getOtherConfigurations();
         $paymentLink = $sendRequest->getResponse()->getRedirectUrl();
         
-        $this->assertContains('sdk:php;version:1.00;type:JsCharge', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:JsCharge', $merchantParams, 'Assert merchantParams in request');
 
         $urlPattern = '/https:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}(\/\S*)?/';
         $this->assertMatchesRegularExpression($urlPattern, $paymentLink, 'Test for verifying URL presence in sendRedirectionPaymentRequest');
@@ -105,6 +106,8 @@ class JSChargeAddonPaymentsSDKTest extends TestCase
             $parameters->setStatusURL('https://test.com/status');
         if ($missingParameter !== 'successURL')       
             $parameters->setSuccessURL('https://test.com/success');
+        if($missingParameter !== 'cancelURL')
+            $parameters->setCancelURL('https://test.com/cancel');   
         if ($missingParameter !== 'errorURL')      
             $parameters->setErrorURL('https://test.com/error');  
         if ($missingParameter !== 'awaitingURL')
@@ -133,6 +136,7 @@ class JSChargeAddonPaymentsSDKTest extends TestCase
             'Missing Api Version' => ['apiVersion', 'Mandatory parameters are missing. Please ensure you provide:  apiVersion.'],
             'Missing PrepayToken' => ['prepayToken', 'Mandatory parameters are missing. Please ensure you provide:  prepayToken.'],
             'Missing Status URL' => ['statusURL', 'Mandatory parameters are missing. Please ensure you provide:  statusURL.'],
+            'Missing Cancel URL' => ['cancelURL', 'Mandatory parameters are missing. Please ensure you provide:  cancelURL.'],
             'Missing Success URL' => ['successURL', 'Mandatory parameters are missing. Please ensure you provide:  successURL.'],
             'Missing Error URL' => ['errorURL', 'Mandatory parameters are missing. Please ensure you provide:  errorURL.'],
             'Missing Error Awaiting URL' => ['awaitingURL', 'Mandatory parameters are missing. Please ensure you provide:  awaitingURL.'],

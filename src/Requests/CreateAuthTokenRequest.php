@@ -1,6 +1,7 @@
 <?php
 namespace AddonPaymentsSDK\Requests;
 
+use AddonPaymentsSDK\Config\Utils\Helpers;
 use AddonPaymentsSDK\Traits\LoggerTrait;
 use AddonPaymentsSDK\Requests\Utils\RequestsPaths;
 use AddonPaymentsSDK\Requests\Utils\Exceptions\NetworkException;
@@ -39,6 +40,16 @@ class CreateAuthTokenRequest {
 
     public ?string $authToken = null;
 
+    private string $packageVersion;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->packageVersion = Helpers::getPackageVersion();
+    }
+
     /**
      * Initializes an authentication token request with necessary parameters.
      *
@@ -58,9 +69,9 @@ class CreateAuthTokenRequest {
         $this->merchantKey = $merchantKey;
         if(count($otherConfigurations) > 0) {
             if (isset($otherConfigurations['merchantParams']) && !empty($otherConfigurations['merchantParams'])) {
-                $otherConfigurations['merchantParams'] .= ';sdk:php;version:1.00;type:JsAuth';
+                $otherConfigurations['merchantParams'] .= ';sdk:php;version:'. $this->packageVersion . ';type:JsAuth';
             } else {
-                $otherConfigurations['merchantParams'] = 'sdk:php;version:1.00;type:JsAuth';
+                $otherConfigurations['merchantParams'] = 'sdk:php;version:'. $this->packageVersion . ';type:JsAuth';
             }
         }
         $this->otherConfigurations = $otherConfigurations;
@@ -92,7 +103,7 @@ class CreateAuthTokenRequest {
             throw new NetworkException("{$errorMsg}");
            
         } else {
-            $this->logMessage("Request processed successfully. Response: {$responseRaw}", $headers , $requestJson, "jsAuth", "creditcards" , $this->otherConfigurations['merchantTransactionId'] ?? 'NoTxn');
+            $this->logMessage("Request processed successfully.", $responseRaw,  $headers , $requestJson, "jsAuth", "NoType" , $this->otherConfigurations['merchantTransactionId'] ?? 'NoTxn');
         }
 
         return ['response' => $responseRaw, 'status_code'=> $httpStatusCode, 'message' => $curlErrorMessage];

@@ -32,7 +32,7 @@ class JSAuthAddonPaymentsSDKTest extends TestCase
                 ->setCountry(CountryCodes::ES)
                 ->setCustomerId('44')
                 ->setOperationType(OperationTypes::DEBIT)
-                ->setAnonymousCustomer('true');
+                ->setAnonymousCustomer(true);
 
 
         $config = new Configuration($cred, $parameters);
@@ -51,7 +51,7 @@ class JSAuthAddonPaymentsSDKTest extends TestCase
         $merchantParams = $sendRequest->getOtherConfigurations();
         $authToken = $sendRequest->getResponse()->getAuthToken();
         
-        $this->assertContains('sdk:php;version:1.00;type:JsAuth', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:JsAuth', $merchantParams, 'Assert merchantParams in request');
 
         $uuidPattern = '/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i';
         $this->assertMatchesRegularExpression($uuidPattern, $authToken, 'Received authToken is not in the correct UUID format');

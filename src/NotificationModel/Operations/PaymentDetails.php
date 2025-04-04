@@ -2,39 +2,37 @@
 
 namespace AddonPaymentsSDK\NotificationModel\Operations;
 
+use AddonPaymentsSDK\NotificationModel\Utils\ExtraDetailsProcessor;
+
 class PaymentDetails
 {
     private ?string $cardHolderName;
     private ?string $cardNumber;
-    private ?int $cardNumberToken;
+    private ?string $cardNumberToken;
     private ?string $cardType;
-    private ?int $expDate;
+    private ?string $expDate;
     private ?array $extraDetails = [];
     private ?string $issuerBank;
     private ?string $issuerCountry;
 
     public function __construct(?object $paymentDetails)
     {
+        $this->setCardHolderName(isset($paymentDetails->cardHolderName) ? trim($paymentDetails->cardHolderName) : null);
+        $this->setCardNumber(isset($paymentDetails->cardNumber) ? trim($paymentDetails->cardNumber) : null);
+        $this->setCardNumberToken(isset($paymentDetails->cardNumberToken) ? trim($paymentDetails->cardNumberToken) : null);
+        $this->setCardType(isset($paymentDetails->cardType) ? trim($paymentDetails->cardType) : null);
+        $this->setExpDate(isset($paymentDetails->expDate) ? trim($paymentDetails->expDate) : null);
+        $this->setIssuerBank(isset($paymentDetails->issuerBank) ? trim($paymentDetails->issuerBank) : null);
+        $this->setIssuerCountry(isset($paymentDetails->issuerCountry) ? trim($paymentDetails->issuerCountry) : null);
 
-        $this->setCardHolderName(isset($paymentDetails->cardHolderName) ? $paymentDetails->cardHolderName : null);
-        $this->setCardNumber(isset($paymentDetails->cardNumber) ? $paymentDetails->cardNumber : null);
-        $this->setCardNumberToken(isset($paymentDetails->cardNumberToken) ? $paymentDetails->cardNumberToken : null);
-        $this->setCardType(isset($paymentDetails->cardType) ? $paymentDetails->cardType : null);
-        $this->setExpDate(isset($paymentDetails->expDate) ? $paymentDetails->expDate : null);
-        $this->setIssuerBank(isset($paymentDetails->issuerBank) ? $paymentDetails->issuerBank : null);
-        $this->setIssuerCountry(isset($paymentDetails->issuerCountry) ? $paymentDetails->issuerCountry : null);
-
-        // Process extraDetails
-        if (isset($paymentDetails->extraDetails->entry)) {
-            foreach ($paymentDetails->extraDetails->entry as $entry) {
-                $key = (string) $entry->key;
-                $value = (string) $entry->value;
-                $this->extraDetails[$key] = $value;
-            }
+        // Process extraDetails using utility function
+        if(isset($paymentDetails->extraDetails)){
+            $this->extraDetails = ExtraDetailsProcessor::processExtraDetails($paymentDetails->extraDetails);
         }
     }
 
     // Setters
+
     private function setCardHolderName(?string $cardHolderName): void
     {
         $this->cardHolderName = $cardHolderName;
@@ -45,7 +43,7 @@ class PaymentDetails
         $this->cardNumber = $cardNumber;
     }
 
-    private function setCardNumberToken(?int $cardNumberToken): void
+    private function setCardNumberToken(?string $cardNumberToken): void
     {
         $this->cardNumberToken = $cardNumberToken;
     }
@@ -55,7 +53,7 @@ class PaymentDetails
         $this->cardType = $cardType;
     }
 
-    private function setExpDate(?int $expDate): void
+    private function setExpDate(?string $expDate): void
     {
         $this->expDate = $expDate;
     }
@@ -95,9 +93,9 @@ class PaymentDetails
     /**
      * Get the card number token associated with the payment details.
      *
-     * @return int|null The card number token or null if not found.
+     * @return string|null The card number token or null if not found.
      */
-    public function getCardNumberToken(): ?int
+    public function getCardNumberToken(): ?string
     {
         return $this->cardNumberToken;
     }
@@ -112,13 +110,12 @@ class PaymentDetails
         return $this->cardType;
     }
 
-
     /**
      * Get the expiration date of the card associated with the payment details.
      *
-     * @return int|null The expiration date or null if not found.
+     * @return string|null The expiration date or null if not found.
      */
-    public function getExpDate(): ?int
+    public function getExpDate(): ?string
     {
         return $this->expDate;
     }

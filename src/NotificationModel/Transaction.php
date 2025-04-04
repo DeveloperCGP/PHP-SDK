@@ -2,6 +2,8 @@
 
 namespace AddonPaymentsSDK\NotificationModel;
 
+use AddonPaymentsSDK\NotificationModel\Utils\ExtraDetailsProcessor;
+
 class Transaction
 {
     private ?string $message;
@@ -13,6 +15,7 @@ class Transaction
 
     public function __construct(string $raw)
     {
+        
         $this->message = null;
         $this->status = null;
         $this->workFlowResponse = null;
@@ -23,9 +26,8 @@ class Transaction
         }
 
         $decoded = json_decode($raw, false);
-
         if (json_last_error() == JSON_ERROR_NONE) {
-
+         
             if (isset($decoded->response) && is_string($decoded->response)) {
                 $xmlObject = simplexml_load_string($decoded->response, "SimpleXMLElement", LIBXML_NOCDATA);
                 if ($xmlObject !== false) {
@@ -39,10 +41,14 @@ class Transaction
             }
             $this->processData($decoded);
         } else {
+            
             $xmlObject = simplexml_load_string($raw, "SimpleXMLElement", LIBXML_NOCDATA);
+            
             if ($xmlObject !== false) {
                 $decoded = json_decode(json_encode($xmlObject), false);
                 $this->processData($decoded);
+                
+                
             }
         }
     }
@@ -61,6 +67,11 @@ class Transaction
         if (isset($data->operations)) {
             $this->setOperations($data->operations->operation);
         }
+
+        if(isset($data->optionalTransactionParams)) {
+            $this->setOptionalTransactionParams($data->optionalTransactionParams);
+        }
+       
     }
 
 
@@ -81,12 +92,15 @@ class Transaction
     }
 
 
-
     private function setOperations(mixed $var): void
     {
         $this->operations = new Operations($var);
     }
 
+    private function setOptionalTransactionParams(mixed $var): void
+    {
+        if ($var) $this->optionalTransactionParams = ExtraDetailsProcessor::processExtraDetails($var);
+    }
 
 
     public function getMessage(): ?string
@@ -110,7 +124,7 @@ class Transaction
     {
         return $this->operations;
     }
-
+    
     public function getOptionalTransactionParams(): mixed
     {
         return $this->optionalTransactionParams;
