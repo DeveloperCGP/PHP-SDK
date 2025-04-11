@@ -2,6 +2,7 @@
 
 namespace AddonPaymentsSDK\Requests;
 
+use AddonPaymentsSDK\Config\Utils\Helpers;
 use AddonPaymentsSDK\Traits\LoggerTrait;
 use AddonPaymentsSDK\Requests\Utils\RequestsPaths;
 use AddonPaymentsSDK\Requests\Utils\Exceptions\NetworkException;
@@ -24,19 +25,17 @@ class CreateChargeRequest
     public ?string $encryptedRequest = null;
     public ?string $signature = null;
     public ?string $redirectUrl = null;
-
     private array $otherConfigurations = [];
-
-
     public null | string | bool $response = null;
-
-    
-  
     public ?string $merchantKey = null;
-  
     public ?int  $productId = null;
-
+    private string $packageVersion;
    
+
+    public function __construct()
+    {
+        $this->packageVersion = Helpers::getPackageVersion();
+    }
 
 /**
      * Initializes a charge request with necessary parameters.
@@ -57,9 +56,9 @@ class CreateChargeRequest
         $this->merchantKey = $merchantKey;
         if(count($otherConfigurations) > 0) {
             if (isset($otherConfigurations['merchantParams']) && !empty($otherConfigurations['merchantParams'])) {
-                $otherConfigurations['merchantParams'] .= ';sdk:php;version:1.00;type:JsCharge';
+                $otherConfigurations['merchantParams'] .= ';sdk:php;version:'. $this->packageVersion . ';type:JsCharge';
             } else {
-                $otherConfigurations['merchantParams'] = 'sdk:php;version:1.00;type:JsCharge';
+                $otherConfigurations['merchantParams'] = 'sdk:php;version:'. $this->packageVersion . ';type:JsCharge';
             }
         }
         $this->otherConfigurations = $otherConfigurations;
@@ -96,7 +95,7 @@ class CreateChargeRequest
            $this->logError("Communication error occurred while processing the request. Details: {$errorMsg}");
            throw new NetworkException("{$errorMsg}");
        } else {
-           $this->logMessage("Request processed successfully. Response: \n{$responseRaw}", $headers , $requestJson, "jsCharge", "creditcards" , $this->otherConfigurations['merchantTransactionId']);
+           $this->logMessage("Request processed successfully.", $responseRaw , $headers , $requestJson, "jsCharge", "creditcards" , $this->otherConfigurations['merchantTransactionId']);
        }
 
         return ['response' => $responseRaw, 'status_code'=> $httpStatusCode, 'message' => $curlErrorMessage];

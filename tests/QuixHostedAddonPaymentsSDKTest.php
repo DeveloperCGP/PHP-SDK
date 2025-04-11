@@ -31,7 +31,6 @@ class QuixHostedAddonPaymentsSDKTest extends TestCase
         $parameters = new QuixParameters();
         $parameters
             ->setCustomerId('11')
-            ->setCustomerCountry(CountryCodes::ES)
             ->setCustomerEmail('test@mail.com')
             ->setMerchantTransactionId('87315')
             ->setCustomerNationalId('99999999R')
@@ -41,6 +40,7 @@ class QuixHostedAddonPaymentsSDKTest extends TestCase
             ->setErrorURL('https://test.com/status')
             ->setCancelURL('https://test.com/status')
             ->setAwaitingURL('https://test.com/status')
+            ->setCustomerNationalId('99999999R')
             ->setFirstName('Nombre')
             ->setDob('01-12-1999')
             ->setLastName('Apellido');
@@ -92,13 +92,13 @@ class QuixHostedAddonPaymentsSDKTest extends TestCase
         $merchantParams = $sendRequest->getOtherConfigurations();
         $paymentLink = $sendRequest->getResponse()->getRedirectUrl();
         
-        $expectedEncryptedRequest = 'g4lqI0iz6/VzgHQjJK3WxQDlLXnEcmAjhRUZRNecq7v0G157k8a8tyP+/uVrxrqENLr6fzqOPRY+3RxnkctcdBQ9HHk9e9Hs3ot3japWb8ESTUqEoKXpkGf4cNmx2ypjeniuaWO0ts7HGkdXR16tNpdNmMGcdXXnbD9+2miqpnqc1VjPHfREZzlZzzHpckJ3lHAJhN7ublSYr6fKErii27ISoko0ubGHAukK5Pq8bnQi4iCo6M9szkgJS3kJzWrHnTxUSywsDtbkjotACKAlJ3otxdhxGYw1a4MWvUYAWkdng5pijjjMNLF1lMeBd5FxJJY9JkZJ05iAh38M6/3/3ZgM7drA0DzG/Z4GQb7DAQV+pfPkXkP48w8V1uqe8KH++Muavklr/UIDDGk3kXMavwxmCuWUSnUvLMQdFJwmZuiSsKaXODXH2Gaucnq0vgPvX1BnaJc0LcTa0tWm8kdvwnWMGv4iFnW22mSYRl7kEpop4x3eVLMaFuSb98pzMA0hmgL6GMVydgCFVQOF6AJY1PIEoMQwGVbpcTuGEsDkSd7prxnwhLYVxBBlXoumjwku5McqoGkbD2E5Y99wAe6ykiddi0aInSyou3eLmn6Nhkq1GcfuD4qVi/6X4lFkK5wWOp6gF2DrkzN7cGS0wsqr7yfUtIIBnqU4uFWkyaPc1cZ/axO2ZYKWx+lJ44AL8v5sWAlGTYxm4YrOICUAs8RYlF4aRHXNWSYYDtpbkSbd5EYIxDpCLL7UUdoDULHWNpj9o+dJNCFNCY4/HLuAl7s3pDmfHhTZVb7+k/vwHI/AOkE2zrQ7qgUstk6fvhdX75YP2AqRnEqhYRA86A2vhv4EJ4swCw7oCdNsnVxFO4bMpC5U6/53DXBEKPSa0zGNuVk75IewVnr4i04ByozIXCt1IUl5gdkEk9UlE2dabR5YlPANindDst3CG9q8S+lv/yXQgAn+HEIIpFvfGI02HcFRoJh/Fsk+Z/yQGb1kdZguIlav9E+DPqar1qTlZqh/O34Wq+aBTL5mZOh4v57ZL4RTxFvA/nKIxSDuJJkXH4vZRDrn4twcyzLNIXoxOnApb424UOte9lcueoATn/dWXhjFo/5KaYGU8D0gDRTLfo6eS3prmOnU0GBOx/Te59pduz+Tac2oDiWOPye3dHbKlKPjeeXTbc5As5E0inaUKfdhZy3duOjORyceWHdPGBFnxBii9b5tLNQIu2o0VW4uVHA2EQKNJS9OBdYXl9u/ubPIN9OelDUWKD4O2YbrJi5moPGk+o/HZlzAIk8k667i9zBxymMWW7v8TC57gPJjlZVccL4voDX2Ka+67jsfGQb/m1HAbybKXlG2AYcUrczpToEwCKedpWxSIopvz7lwo7p3egOhgTDRF/qer8eo+cSlHdg/SOMeEGR0waJPDynF+MKiyhEa6qmC/Wey50cgJ5qT0j4mOwIL0YCBPYKplW0KQzWOuHRjwvD4rcoSrVBa76RPinrLlvxtxb593zkLM+PEOmMGqBYuLgwrGnxiY9ibM/hwh6G54M09uZCucPOs9ENy5g4D6edrMm39IITs0d/+MhMS/x5gUSjxT2bm7PSnjKU0k7bRF/l6wKbPNiaaMlIRdlKSY3VPzwU+ON+zEG0ueGmrn8bE1Pu167ilbPitrnhr+2LcH6gra11ZfP81Ek4B0S1nFZOsiPs4fxkIYz6RwioBSEJYZNcxsHs0LzBqVzl7k0dlrXzd/KTEnxcWYJMfoQ==';
+        $expectedEncryptedRequest = 'g4lqI0iz6/VzgHQjJK3WxQDlLXnEcmAjhRUZRNecq7v0G157k8a8tyP+/uVrxrqENLr6fzqOPRY+3RxnkctcdFLPkJnZdGCOJn4QxDamZcchawj7nfA4wfXwwP3uU85TghmqJDvsl7xlfn48iGG932mKivaYO6YtXQpx1vijyML5CMaDZguFxoc/QmBc+gWXHxEqvehAFrYOmbMtQLo0CDo/doiDIwnvJNZrKEYxvP3TzExIxK+2lDKO3VlhEHhIM3/gptXtkhz+rQQfwu0d8hsWqlRs9gY1xqTk6VZ4HHfgU8BWQrqafFYGV5XtnoabKDaeqVs4pyt7SVSpmWq5uEUrF+oYvtdS3qeMxoZSqgrUj74VLehqREKGpI204aTxm2BnKGGpwpyoZiYGYia6+XtenieaauXEf+Vj902jzKWRsT3NpRYZeeoaTj2/bCqSfHo5Sur3lxQyCXqhG+BiULkLYGulbGazgbysbION0bArIOQn0CXpBr2FGeBBKECuwQI3t8ViF95rVSDVfZIbDa/x+WmKT3mF81bTx1+qBKKnCpg39DOcPEV2PmoEDj5UMB2hLckQlDhJpGvocuNrAMoFJTbCraTygWzUCFMzfpf0FCgfplxnpKJ8cYj6arbvoP0GmPnWg2cafFbBivPwIyodHvKxPILHORPYUouie4itxhV9zbohUj3AHfxBLBlGQbkrcYFSEp2bWkPGxsI7CBRcKsZ+MmO003OKQjLRDoPXqvx4lVcfBTB1TPbVtDGE7xZ6GF8ZCJpms5OUZEmcZvPvJaFdayXUh5247L6NGvaPyeFAE75F6xULroGoEPo46Zk4oSvjsFZMqTNHhf3k+8CseNVwmPtS9qVbSJNMZdsWSOnuyLZyxbKxMg7uuy1oYx8RRfRHRKLoa/AgxdhWlxsbcGwoolgyvfVAHgqA2/RioYfoVd5a69El+n48H3iAVXUPopMFlywYNZ6Cp3eboAD62WzQJMGelpmYk7v1PgFLTqMbCFB2nAnQC4c+RG3fuN63LBuvnw9FvYl7ebzBcmpAeA4MDiLoE4TxBaB8mBqU12L0odzxX4pMIvYqBqE60Pye2k6pCvM5XUZNdMvSM79GOKYTPLJotUmwMwlEuZ5CBI8x8qCPPHVhxsnNnfswaj1X6hsG9gq44FK8XkI37aXAz7QeaUleDTTa9IDvE61OIKmK8E31y9adb9QdVTel7CP5WXdgW2P+vJTvjrNy1eIowTRsRuzKLAYfZmSslRAKwIk1GuRyJWyMcOosFMw9MjI3LJlFs91vzpliPML4xhet6Ae0PH+9pjvrSPL24x4iyEAkdH+Gh26LjpsyfjUyzNjpJQcmfXe9KLZo+COtb6caVJgwVnZlQas0ImzZrfJ/tJVRPpJd6ZMVWFI0QTTwrt6hYRpHv1eOHkMXbVIzL/AImMLPLacttykqU7InyIvho1VUNKcHlz1SJTh6vMp2HaeFIqsjsV8zsvJFDCc9d2PQ4MmDDwOIIbbhblbMFpjlR+WWOPd+AnxjJChJqL7vSnT4JmUx1Zr9sawwKlSO7U6D4p/EWnNLuEGao0e7zTF/NKyUzfsS6DK5DYQPSq6Wvg1mZ9Norc4yySh1Q48SEmchTnkBlCWUzs/j8HWorykBFHEw7n0xB0SdfA9DB0s2HHNYoTwVBZpeVDxj08dWKA==';
 
         $this->assertEquals($expectedEncryptedRequest, $encryptedRequest, 'The encrypted request does not match the expected values.');
-        $expectedFormatedRequest = 'paymentSolution=quix&language=ES&currency=EUR&country=ES&customerCountry%5Bname%5D=ES&customerCountry%5Bvalue%5D=ES&customerId=11&customerEmail=test%40mail.com&merchantTransactionId=87315&customerNationalId=99999999R&ipAddress=192.168.1.1&statusURL=https%3A%2F%2Ftest.com%2Fstatus&successURL=https%3A%2F%2Ftest.com%2Fstatus&errorURL=https%3A%2F%2Ftest.com%2Fstatus&cancelURL=https%3A%2F%2Ftest.com%2Fstatus&awaitingURL=https%3A%2F%2Ftest.com%2Fstatus&firstName=Nombre&dob=01-12-1999&lastName=Apellido&paysolExtendedData=%7B%22product%22%3A%22instalments%22%2C%22billing%22%3A%7B%22first_name%22%3A%22Nombre%22%2C%22last_name%22%3A%22Apellido+SegundoApellido%22%2C%22address%22%3A%7B%22street_address%22%3A%22Nombre+de+la%22%2C%22postal_code%22%3A28003%2C%22city%22%3A%22Barcelona%22%2C%22country%22%3A%22ESP%22%7D%7D%2C%22cart%22%3A%7B%22currency%22%3A%22EUR%22%2C%22items%22%3A%5B%7B%22auto_shipping%22%3Atrue%2C%22article%22%3A%7B%22type%22%3A%22product%22%2C%22name%22%3A%22Item+1%22%2C%22category%22%3A%22physical%22%2C%22reference%22%3A4912345678904%2C%22unit_price_with_tax%22%3A300%7D%2C%22units%22%3A1%2C%22total_price_with_tax%22%3A300%7D%5D%2C%22total_price_with_tax%22%3A300%7D%7D&amount=300&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.00%3Btype%3AHosted&merchantId=1111111';
+        $expectedFormatedRequest = 'paymentSolution=quix&language=ES&currency=EUR&country=ES&customerCountry=ES&customerId=11&customerEmail=test%40mail.com&merchantTransactionId=87315&customerNationalId=99999999R&ipAddress=192.168.1.1&statusURL=https%3A%2F%2Ftest.com%2Fstatus&successURL=https%3A%2F%2Ftest.com%2Fstatus&errorURL=https%3A%2F%2Ftest.com%2Fstatus&cancelURL=https%3A%2F%2Ftest.com%2Fstatus&awaitingURL=https%3A%2F%2Ftest.com%2Fstatus&firstName=Nombre&dob=01-12-1999&lastName=Apellido&paysolExtendedData=%7B%22product%22%3A%22instalments%22%2C%22billing%22%3A%7B%22first_name%22%3A%22Nombre%22%2C%22last_name%22%3A%22Apellido+SegundoApellido%22%2C%22address%22%3A%7B%22street_address%22%3A%22Nombre+de+la%22%2C%22postal_code%22%3A28003%2C%22city%22%3A%22Barcelona%22%2C%22country%22%3A%22ESP%22%7D%7D%2C%22cart%22%3A%7B%22currency%22%3A%22EUR%22%2C%22items%22%3A%5B%7B%22auto_shipping%22%3Atrue%2C%22article%22%3A%7B%22type%22%3A%22product%22%2C%22name%22%3A%22Item+1%22%2C%22category%22%3A%22physical%22%2C%22reference%22%3A4912345678904%2C%22unit_price_with_tax%22%3A300%7D%2C%22units%22%3A1%2C%22total_price_with_tax%22%3A300%7D%5D%2C%22total_price_with_tax%22%3A300%7D%7D&amount=300&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.0.2%3Btype%3AHosted&merchantId=1111111';
 
         $this->assertEquals($expectedFormatedRequest, $formatedRequest, 'The formatted request does not match the expected values.');
-        $this->assertContains('sdk:php;version:1.00;type:Hosted', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:Hosted', $merchantParams, 'Assert merchantParams in request');
 
         // Your existing assertions...
         $urlPattern = '/https:\/\/[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}(\/\S*)?/';
@@ -129,6 +129,8 @@ class QuixHostedAddonPaymentsSDKTest extends TestCase
             $parameters->setCustomerId('11');
         if ($missingParameter !== 'customerEmail')
             $parameters->setCustomerEmail('test@mail.com');
+        if ($missingParameter !== 'customerNationalId')
+            $parameters->setCustomerNationalId('99999999R');    
         if ($missingParameter !== 'merchantTransactionId')
             $parameters->setMerchantTransactionId('87315');
         if ($missingParameter !== 'statusURL')
@@ -203,6 +205,7 @@ class QuixHostedAddonPaymentsSDKTest extends TestCase
             
             'customerId' => ['customerId', 'Mandatory parameters are missing. Please ensure you provide:  customerId.'],
             'customerEmail' => ['customerEmail', 'Mandatory parameters are missing. Please ensure you provide:  customerEmail.'],
+            'customerNationalId' => ['customerNationalId', 'Mandatory parameters are missing. Please ensure you provide:  customerNationalId.'],
             'merchantTransactionId' => ['merchantTransactionId', 'Mandatory parameters are missing. Please ensure you provide:  merchantTransactionId.'],
 
             'statusURL' => ['statusURL', 'Mandatory parameters are missing. Please ensure you provide:  statusURL.'],

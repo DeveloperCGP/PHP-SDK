@@ -8,6 +8,7 @@ use AddonPaymentsSDK\Requests\Utils\RequestsPaths;
 use AddonPaymentsSDK\Requests\Utils\Exceptions\NetworkException;
 use AddonPaymentsSDK\Requests\Utils\HttpExceptionHandler;
 use AddonPaymentsSDK\Requests\Utils\ResponseQuix;
+use AddonPaymentsSDK\Config\Utils\Helpers;
 
 /**
  * Class to handle Quix Charge Requests.
@@ -27,21 +28,20 @@ class CreateQuixChargeRequest
     public ?string $encryptedRequest = null;
     public ?string $signature = null;
     public ?string $redirectUrl = null;
-
     private array $otherConfigurations = [];
-
-
-
-
     public ?string $merchantKey = null;
     private ?string $nemuruAuthToken = null;
-
     private ?string $nemuruDisableFormEdition = null;
     private ?string $nemuruCartHash = null;
     public ?int $productId = null;
-
     public ?string $response = '';
+    private string $packageVersion;
+   
 
+    public function __construct()
+    {
+        $this->packageVersion = Helpers::getPackageVersion();
+    }
 
     /**
      * Initializes a Quix charge request with necessary parameters.
@@ -62,9 +62,9 @@ class CreateQuixChargeRequest
         $this->merchantKey = $merchantKey;
         if(count($otherConfigurations) > 0) {
             if (isset($otherConfigurations['merchantParams']) && !empty($otherConfigurations['merchantParams'])) {
-                $otherConfigurations['merchantParams'] .= ';sdk:php;version:1.00;type:QuixCharge';
+                $otherConfigurations['merchantParams'] .= ';sdk:php;version:'. $this->packageVersion . ';type:QuixCharge';
             } else {
-                $otherConfigurations['merchantParams'] = 'sdk:php;version:1.00;type:QuixCharge';
+                $otherConfigurations['merchantParams'] = 'sdk:php;version:'. $this->packageVersion . ';type:QuixCharge';
             }
         }
         $this->otherConfigurations = $otherConfigurations;
@@ -97,7 +97,7 @@ class CreateQuixChargeRequest
             throw new NetworkException("{$errorMsg}");
 
         } else {
-            $this->logMessage("Request processed successfully. Response: \n{$responseRaw}", $headers , $requestJson, "jsCharge", "creditcards" , $this->otherConfigurations['merchantTransactionId']);
+            $this->logMessage("Request processed successfully." , $responseRaw, $headers , $requestJson, "jsCharge", "quix" , $this->otherConfigurations['merchantTransactionId']);
        }
  
          return ['response' => $responseRaw, 'status_code'=> $httpStatusCode, 'message' => $curlErrorMessage];

@@ -56,15 +56,15 @@ class H2HCaptureAddonPaymentsSDKTest extends TestCase
         $merchantParams = $sendRequest->getOtherConfigurations();
         $response = $sendRequest->getResponse()->getRawResponse();
         
-        $excpectedEncryptedRequest = 'g4lqI0iz6/VzgHQjJK3Wxb0eOI+6REw11PvpTroAGp1i8Rnogzlx+XNb3mS8gmE8fo9jVLo0XIlCMgX20TvAAiTRD94j4fJUJAiEGVhrp6U3AaYyqoJ5GpO7737iPIUoeBHmEKZWL3BCdFZdLH/ZTwvUhp5Jes2rATwrdkr6+h0/IOCSwGRNF2trVYtqpuC6lfighIfJdEXl4p2wJyc7+F52QSpDmfkCMTYQFuPSH0sivsEa+UGQ7WBgf3jdCexT';
-        $expectedFormatedRequest = 'paymentSolution=caixapucpuce&merchantTransactionId=87145&transactionId=7693681&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.00%3Btype%3ACapture&merchantId=1111111';
+        $excpectedEncryptedRequest = 'g4lqI0iz6/VzgHQjJK3Wxb0eOI+6REw11PvpTroAGp1i8Rnogzlx+XNb3mS8gmE8fo9jVLo0XIlCMgX20TvAAiTRD94j4fJUJAiEGVhrp6U3AaYyqoJ5GpO7737iPIUoeBHmEKZWL3BCdFZdLH/ZTwvUhp5Jes2rATwrdkr6+h3rrIXOw9TRFGhDi7DuxhpFE+8V5Twj8TYXNLt0NSDCZAQgOSyS2lQ1tFEsWwvhzBsmTJ3SI2pLhe5+Qbi0lUn7';
+        $expectedFormatedRequest = 'paymentSolution=caixapucpuce&merchantTransactionId=87145&transactionId=7693681&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.0.2%3Btype%3ACapture&merchantId=1111111';
 
         $this->assertEquals($excpectedEncryptedRequest, $encryptedRequest, 'The formatted request does not match the expected values.');
 
 
         $this->assertEquals($expectedFormatedRequest, $formatedRequest, 'The formatted request does not match the expected values.');
 
-        $this->assertContains('sdk:php;version:1.00;type:Capture', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:Capture', $merchantParams, 'Assert merchantParams in request');
        
         $xml = simplexml_load_string($response);
         $status = (string) $xml->operations->operation->status;

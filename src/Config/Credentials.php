@@ -78,7 +78,7 @@ class Credentials {
      */
     public function setProductId(int $productId): self {
         if (!preg_match('/^\d{6,11}$/', (string) $productId)) {
-            throw new InvalidFieldException("Merchant ID must be a whole number with 4 to 7 digits.");
+            throw new InvalidFieldException("Product ID must be a whole number with 4 to 7 digits.");
         }
         $this->config['productId'] = $productId;
         return $this;

@@ -82,7 +82,7 @@ class QuixJSChargeAddonPaymentsSDKTest extends TestCase
         $merchantParams = $sendRequest->getOtherConfigurations();
         $request = $sendRequest->getResponse();
         
-        $this->assertContains('sdk:php;version:1.00;type:QuixCharge', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:QuixCharge', $merchantParams, 'Assert merchantParams in request');
         $nemuruAuthToken = $request->getNemuruAuthToken();
         $nemuruCash = $request->getNemuruCartHash();
         $pattern = '/^[A-Za-z0-9]{32}$/';
@@ -117,6 +117,8 @@ class QuixJSChargeAddonPaymentsSDKTest extends TestCase
             $parameters->setCustomerId('11');
         if ($missingParameter !== 'customerEmail')
             $parameters->setCustomerEmail('test@mail.com');
+        if ($missingParameter !== 'customerNationalId')
+            $parameters->setCustomerNationalId('99999999R');
         if ($missingParameter !== 'merchantTransactionId')
             $parameters->setMerchantTransactionId('87315');
         if ($missingParameter !== 'statusURL')
@@ -190,6 +192,7 @@ class QuixJSChargeAddonPaymentsSDKTest extends TestCase
             'Missing Environment' => ['environment', 'Mandatory credentials are missing. Please ensure you provide:  environment.'],
             'customerId' => ['customerId', 'Mandatory parameters are missing. Please ensure you provide:  customerId.'],
             'customerEmail' => ['customerEmail', 'Mandatory parameters are missing. Please ensure you provide:  customerEmail.'],
+            'customerNationalId' => ['customerNationalId', 'Mandatory parameters are missing. Please ensure you provide:  customerNationalId.'],
             'merchantTransactionId' => ['merchantTransactionId', 'Mandatory parameters are missing. Please ensure you provide:  merchantTransactionId.'],
             'statusURL' => ['statusURL', 'Mandatory parameters are missing. Please ensure you provide:  statusURL.'],
             'successURL' => ['successURL', 'Mandatory parameters are missing. Please ensure you provide:  successURL.'],

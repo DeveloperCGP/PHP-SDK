@@ -57,12 +57,12 @@ class H2HRefundAddonPaymentsSDKTest extends TestCase
         $encryptedRequest = $sendRequest->getEncryptedRequest();
         $merchantParams = $sendRequest->getOtherConfigurations();
         $response = $sendRequest->getResponse()->getRawResponse();
-        $excepctedEncryptedRequest = 'Ivru45o5oVWiWi1UR/u74exZ1t0Lup9pVKIzRnWRXtcG1cNvLegZ2522JbwwVIYUgAvAP0Ey7i0N02whn0GeMuwj68k6GDodTEBzAY+7bCjyecKaERyj3SPad5YjeEIXYvaZo08ztZtDtHDc9M0gV07+XHl3BsQ6XHakXCF6leJ6B/KhRFy/zffrzELmkf6kRuedoADiEpu3/3257YwMudkg9C77Cu77+dzqfl7Xh0WOSbIPIYKRUtH011ZbCEGD';
-        $expectedFormatedRequest = 'amount=30&paymentSolution=caixapucpuce&merchantTransactionId=87145&transactionId=7693681&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.00%3Btype%3ARefund&merchantId=1111111';
+        $excepctedEncryptedRequest = 'Ivru45o5oVWiWi1UR/u74exZ1t0Lup9pVKIzRnWRXtcG1cNvLegZ2522JbwwVIYUgAvAP0Ey7i0N02whn0GeMuwj68k6GDodTEBzAY+7bCjyecKaERyj3SPad5YjeEIXYvaZo08ztZtDtHDc9M0gV07+XHl3BsQ6XHakXCF6leJ6B/KhRFy/zffrzELmkf6kgnrYPp/tHBKDMIUiyKbWT8QkHLneF8eK2op67l9TY3BiZIRuF0+n3as/LoZ9IicX';
+        $expectedFormatedRequest = 'amount=30&paymentSolution=caixapucpuce&merchantTransactionId=87145&transactionId=7693681&productId=111166625&merchantParams=sdk%3Aphp%3Bversion%3A1.0.2%3Btype%3ARefund&merchantId=1111111';
 
         $this->assertEquals($excepctedEncryptedRequest, $encryptedRequest, 'The formatted request does not match the expected values.');
         $this->assertEquals($expectedFormatedRequest, $formatedRequest, 'The formatted request does not match the expected values.');
-        $this->assertContains('sdk:php;version:1.00;type:Refund', $merchantParams, 'Assert merchantParams in request');
+        $this->assertContains('sdk:php;version:1.0.2;type:Refund', $merchantParams, 'Assert merchantParams in request');
         $xml = simplexml_load_string($response);
         $status = (string) $xml->operations->operation->status;
 

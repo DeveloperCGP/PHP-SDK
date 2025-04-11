@@ -24,7 +24,6 @@ class ThreeDsOperation
 
     public function __construct(mixed $operation)
     {
-
         $this->setStatus(isset($operation->status) ? trim((string) $operation->status) : null);
         $this->setTransactionId(isset($operation->transactionId) ? trim((string) $operation->transactionId) : null);
         $this->setPayFrexTransactionId(isset($operation->payFrexTransactionId) ? trim((string) $operation->payFrexTransactionId) : null);

@@ -36,6 +36,8 @@ class NotificationTest extends TestCase
 
         $this->xml_inside_json = file_get_contents(__DIR__ . '/notifications/xml_inside_json.json');
         
+        $this->notification_optional_transaction_paramters = file_get_contents(__DIR__ . '/notifications/optional_transactions_paramters.xml');
+        $this->notification_optional_transaction_paramters_json = file_get_contents(__DIR__ . '/response/charge.json');
     }
 
     public function testCard4907270002222227()
@@ -182,4 +184,21 @@ class NotificationTest extends TestCase
         $this->assertEquals('LHb76UKXmwW78LUI9VCWnwP9NKv5Qljt', $notification->getOperation()?->getPaymentDetails()?->getExtraDetails()?->getNemuruAuthToken(), 'NemuruAuthToken should be "LHb76UKXmwW78LUI9VCWnwP9NKv5Qljt"');
     }
 
+    public function testCardOptionalTransactionParamterJson()
+    {
+       
+
+        $notification = new Transaction($this->notification_optional_transaction_paramters_json);
+        
+        $this->assertEquals('ValorN', $notification->getOptionalTransactionParams()['ClaveN'] , 'First entry should be "ecommerce"');
+        $this->assertEquals('Valor1', $notification->getOptionalTransactionParams()['Clave1'] , 'Second entry should be "postman"');
+    }
+    public function testCardOptionalTransactionParamter()
+    {
+        $notification = new Transaction($this->notification_optional_transaction_paramters);
+        $this->assertEquals('ecommerce', $notification->getOptionalTransactionParams()['product'] , 'First entry should be "ecommerce"');
+        $this->assertEquals('postman', $notification->getOptionalTransactionParams()['platform'] , 'Second entry should be "postman"');
+        $this->assertEquals('ecommerce', $notification->getOperations()->getPaymentSolutionOperation()->getOptionalTransactionParams()['product'] , 'First entry should be "ecommerce"');
+        $this->assertEquals('postman', $notification->getOperations()->getPaymentSolutionOperation()->getOptionalTransactionParams()['platform'] , 'Second entry should be "postman"');
+    }
 }

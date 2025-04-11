@@ -20,29 +20,38 @@ The AddonPayments SDK is designed to allow quick and easy, yet flexible integrat
 **Requirement**:
 - Version >= PHP 8.0
 
-## Composer Install Guide Using the Artifact Repositories
+## Installing the SDK via Composer
 
-To use the SDK artifact in Composer, you need to add a repository entry to your `composer.json` file. The URL can be a path within your filesystem, if you download the SDK's zip file manually.
+To use the SDK via Composer, follow one of these steps:
+
+1. **Directly Add and Install the Package**:
+
+Run the following command in your terminal to add and install the package directly:
+
+```sh
+composer require comerciaglobalpayments/phpsdk
+```
+
+2. **Manual Addition to `composer.json`**:
+
+Alternatively, you can manually add the package to your `composer.json` file:
 
 ```json
 {
-    "repositories": [
-        {
-            "type": "artifact",
-            "url": "path/to/artifacts" 
-        }
-    ],
     "require": {
-        "phpsdk/addonpayments": "00.1" 
+        "comerciaglobalpayments/phpsdk": "^1.0"
     }
 }
 ```
 
-Next, just install the packages:
+Then, run the following command to install the package:
 
 ```sh
 composer install
 ```
+
+This will download and install the SDK, ensuring you have the latest version.
+
 
 ## Autoloading the SDK
 
